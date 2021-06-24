@@ -1,6 +1,7 @@
 .header {
   display: flex;
   position: relative;
+  z-index: 2;
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
@@ -22,7 +23,8 @@
 }
 
 .header__menu {
-  margin: 28px 0;
+  display: flex;
+  margin: auto 70px auto auto;
   font-family: Inter, serif;
   font-style: normal;
   font-weight: 400;
@@ -30,13 +32,38 @@
   line-height: 18px;
   color: #ffffff;
   text-decoration: none;
+  text-align: center;
+  align-items: center;
 }
 
-.header__menu_hidden {
-  display: none;
+.header__menu_type_text{
+  margin: 0 10px;
+}
+
+.header__menu_type_account {
+  margin: 0 0 0 30px;
+}
+
+.header__menu_type_icon {
+  margin-left: 10px;
+}
+
+.header__menu_type_login {
+  color: #000000;
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+.header__menu_type_button {
+  cursor: pointer;
+  width: 76px;
+  height: 32px;
+  text-decoration: none;
+  border: none;
+  border-radius: 3px;
+  background: #3ddc84;
 }
 
 .header__menu_current {
   font-weight: 600;
-
 }

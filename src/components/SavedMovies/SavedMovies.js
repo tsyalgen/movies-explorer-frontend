@@ -1,10 +1,18 @@
 import './SavedMovies.css';
+import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import Footer from "../Footer/Footer";
 
 function SavedMovies() {
+  const isSavedCard = true;
   return (
-    <div className="saved-movies">
-      <h1>Saved Movies</h1>
-    </div>
+    <>
+      <main className="movies">
+        <SearchForm />
+        <MoviesCardList isSavedCard={isSavedCard}/>
+      </main>
+      <Footer />
+    </>
   );
 }
 

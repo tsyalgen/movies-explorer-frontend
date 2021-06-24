@@ -1,0 +1,23 @@
+.movies{
+  display: flex;
+  flex-direction: column;
+  padding: 0 70px 30px 70px;
+}
+
+.movies__more-button{
+  display: grid;
+  width: 320px;
+  height: 36px;
+  background: inherit;
+  border-radius: 5px;
+  border: 1px solid #424242;
+  cursor: pointer;
+  font-family: Inter, serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  align-content: center;
+  align-self: center;
+  color: #ffffff;
+}

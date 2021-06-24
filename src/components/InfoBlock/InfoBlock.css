@@ -1,0 +1,23 @@
+.info-block{
+  display: flex;
+  flex-direction: column;
+}
+
+.info-block__title{
+  font-family: Inter, serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.info-block__text{
+  font-family: Inter, serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #ffffff;
+}
