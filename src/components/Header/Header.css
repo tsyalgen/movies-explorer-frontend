@@ -85,3 +85,131 @@
 .header__menu_current {
   font-weight: 600;
 }
+
+.header__menu_mobile{
+  display: none;
+}
+
+/*burger menu block*/
+
+.header__menu-toggle {
+  opacity: 0;
+}
+
+.header__menu-toggle:checked ~ .header__menu-btn > .header__menu-span {
+  transform: rotate(45deg);
+}
+.header__menu-toggle:checked ~ .header__menu-btn > .header__menu-span::before {
+  top: 0;
+  transform: rotate(0);
+}
+.header__menu-toggle:checked ~ .header__menu-btn > .header__menu-span::after {
+  top: 0;
+  transform: rotate(90deg);
+}
+.header__menu-toggle:checked ~ .header__menu-box {
+  visibility: visible;
+  right: 0;
+}
+
+.header__menu-toggle:checked ~ .header__menu_type_background {
+  visibility: visible;
+}
+
+.header__menu-btn {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 15px;
+  right: 30px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.header__menu-btn > .header__menu-span,
+.header__menu-btn > .header__menu-span::before,
+.header__menu-btn > .header__menu-span::after {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  transition-duration: .25s;
+}
+.header__menu-btn > .header__menu-span::before {
+  content: '';
+  top: -8px;
+}
+.header__menu-btn > .header__menu-span::after {
+  content: '';
+  top: 8px;
+}
+
+.header__menu_type_background{
+  position: fixed;
+  visibility: hidden;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  background: #000000;
+  opacity: 0.4;
+}
+
+.header__menu-box {
+  position: fixed;
+  visibility: hidden;
+  z-index: 1;
+  top: 0;
+  right: -100%;
+  width: 500px;
+  height: 100%;
+  margin: 0;
+  padding: 120px 0 80px 0;
+  list-style: none;
+  background-color: #202020;
+  box-shadow: 1px 0 6px rgba(0, 0, 0, .2);
+  transition-duration: .25s;
+}
+
+.header__menu-item{
+  margin: 20px auto;
+}
+
+.header__menu-item:last-of-type{
+  margin: 30% auto 0 auto;
+
+
+}
+
+.header__menu-link{
+  font-family: Inter, serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+
+.header__menu-item_active{
+  border-bottom: solid 2px #ffffff;
+}
+
+/*burger menu block end*/
+
+@media screen and (max-width: 768px) {
+  .header__menu_desktop{
+    display: none;
+  }
+
+  .header__menu_mobile{
+    display: flex;
+  }
+}
