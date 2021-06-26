@@ -27,14 +27,11 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: #202020;
+  background-color: #ffffff;
   content: "";
   transition: left 0.3s;
 }
 
-.filter-checkbox__input:hover::after {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20);
-}
 
 .filter-checkbox__input:checked {
   background-color: #3ddc84;
@@ -47,6 +44,5 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: #ffffff;
   content: "";
 }

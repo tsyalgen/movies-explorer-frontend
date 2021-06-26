@@ -4,19 +4,19 @@ import account from '../../images/account.svg';
 import {Link, NavLink, Route} from "react-router-dom";
 
 function Header() {
-  const loggedIn = true;
+  const loggedIn = false;
   return (
     <header className="header">
       <Route path="/signin">
         <div className="header__auth">
-          <Link to="/" className="header__logo transparence"><img src={logo} alt="логотип проекта"/></Link>
-          <h1>SIGNIN</h1>
+          <Link to="/" className="header__logo_type_auth transparence"><img src={logo} alt="логотип проекта"/></Link>
+          <h2 className="header__title_type_auth">Рады видеть!</h2>
         </div>
       </Route>
       <Route path="/signup">
         <div className="header__auth">
-          <Link to="/" className="header__logo transparence"><img src={logo} alt="логотип проекта"/></Link>
-          <h1>SIGNup</h1>
+          <Link to="/" className="header__logo_type_auth transparence"><img src={logo} alt="логотип проекта"/></Link>
+          <h2 className="header__title_type_auth">Добро пожаловать!</h2>
         </div>
       </Route>
       <Route exact path={["/", "/movies", "/saved-movies", "/profile"]}>
