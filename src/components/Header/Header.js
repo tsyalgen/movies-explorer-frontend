@@ -4,7 +4,7 @@ import account from '../../images/account.svg';
 import {Link, NavLink, Route} from "react-router-dom";
 
 function Header() {
-  const loggedIn = true;
+  const loggedIn = false;
   return (
     <header className="header">
       <Route path="/signin">
@@ -31,25 +31,28 @@ function Header() {
             <NavLink to="/profile" className="header__menu header__menu_desktop header__menu_type_account transparence"
                      activeClassName="header__menu_current">Аккаунт
               <img src={account} alt="иконка аккаунта" className="header__menu_type_icon transparence"/></NavLink>
-            <div className="header__menu header__menu_mobile header__menu-burger">
+            <div className="header__menu_mobile header__menu-burger">
               <input className="header__menu-toggle" id="menu-toggle" type="checkbox"/>
               <label className="header__menu-btn" htmlFor="menu-toggle">
                 <span className="header__menu-span"/>
               </label>
               <ul className="header__menu-box">
-                <li className="header__menu-item"><NavLink exact to="/" className="header__menu-link"
-                                                           activeClassName="header__menu-item_active">Главная</NavLink>
+                <li className="header__menu-item">
+                  <NavLink exact to="/" className="header__menu-link"
+                           activeClassName="header__menu-item_active">Главная</NavLink>
                 </li>
-                <li className="header__menu-item"><NavLink to="/movies" className="header__menu-link"
-                                                           activeClassName="header__menu-item_active">Фильмы</NavLink>
+                <li className="header__menu-item">
+                  <NavLink to="/movies" className="header__menu-link"
+                           activeClassName="header__menu-item_active">Фильмы</NavLink>
                 </li>
-                <li className="header__menu-item"><NavLink to="/saved-movies" className="header__menu-link"
-                                                           activeClassName="header__menu-item_active">Сохраненные
-                  фильмы</NavLink>
+                <li className="header__menu-item">
+                  <NavLink to="/saved-movies" className="header__menu-link"
+                           activeClassName="header__menu-item_active">Сохраненные фильмы</NavLink>
                 </li>
-                <li className="header__menu-item"><NavLink to="/profile" className="header__menu-link"
-                                                           activeClassName="header__menu-item_active">Аккаунт
-                  <img src={account} alt="иконка аккаунта" className="header__menu_type_icon"/></NavLink>
+                <li className="header__menu-item">
+                  <NavLink to="/profile" className="header__menu-link"
+                           activeClassName="header__menu-item_active">Аккаунт</NavLink>
+                  <img src={account} alt="иконка аккаунта" className="header__menu_type_icon"/>
                 </li>
               </ul>
               <div className="header__menu_type_background"/>

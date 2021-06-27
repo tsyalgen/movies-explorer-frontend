@@ -14,6 +14,7 @@
 .about-me__text{
   width: 55%;
   text-align: start;
+  margin-right: 35px;
 }
 
 .about-me__name{
@@ -29,6 +30,8 @@
 
 .about-me__photo{
   border-radius: 10px;
+  width: 270px;
+  height: 327px;
 }
 
 .about-me__links{
@@ -46,4 +49,25 @@
   color: #ffffff;
   margin-right: 20px;
   text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .about-me {
+    padding: 90px 50px;
+  }
+
+  .about-me__name{
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  .about-me__description{
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .about-me__photo{
+    width: 255px;
+    height: 307px;
+  }
 }

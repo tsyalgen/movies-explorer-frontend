@@ -46,3 +46,9 @@
   text-decoration: none;
   margin-left: 20px;
 }
+
+@media screen and (max-width: 768px) {
+  .footer {
+    padding: 90px 30px 20px 30px;
+  }
+}
