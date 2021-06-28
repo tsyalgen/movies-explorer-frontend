@@ -112,3 +112,25 @@
   text-align: center;
   color: #4285f4;
 }
+
+@media screen and (max-width: 725px) {
+  .register{
+    width: 70%;
+  }
+
+  .register__redirect-question{
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .register__link{
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .register{
+    width: 90%;
+  }
+}

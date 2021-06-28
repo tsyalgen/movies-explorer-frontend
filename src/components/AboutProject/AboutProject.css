@@ -47,3 +47,22 @@
     padding: 90px 50px;
   }
 }
+
+@media screen and (max-width: 680px) {
+  .about-project__description{
+    flex-direction: column;
+    margin-bottom: 50px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .about-project {
+    padding: 60px 20px;
+  }
+
+
+  .about-project__graph{
+    font-size: 11px;
+    line-height: 13px;
+  }
+}

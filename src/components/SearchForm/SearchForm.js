@@ -21,8 +21,10 @@ const SearchForm = () => {
           </button>
           <span className="search-form__border" />
         </form>
-        <FilterCheckbox />
-        <p className="search-form__shortfilms">Короткометражки</p>
+        <div className="search-form__checkbox">
+          <FilterCheckbox />
+          <p className="search-form__shortfilms">Короткометражки</p>
+        </div>
       </div>
     </section>
   );

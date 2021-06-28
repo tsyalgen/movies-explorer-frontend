@@ -21,3 +21,21 @@
   line-height: 20px;
   color: #ffffff;
 }
+
+@media screen and (max-width: 570px) {
+  .info-block:last-of-type{
+    margin-top: 50px;
+  }
+
+  .info-block__title{
+    font-size: 18px;
+    line-height: 22px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .info-block__text{
+    font-size: 11px;
+    line-height: 16px;
+  }
+}

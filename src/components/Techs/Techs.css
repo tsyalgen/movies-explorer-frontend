@@ -55,7 +55,6 @@
 }
 @media screen and (max-width: 830px) {
 
-
   .techs {
     padding: 90px 50px;
   }
@@ -69,4 +68,22 @@
     width: 75px;
     height: 50px;
   }
+}
+
+@media screen and (max-width: 550px) {
+
+  .techs {
+    padding: 60px 18px;
+  }
+
+  .techs__title{
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .techs__description{
+    font-size: 11px;
+    line-height: 16px;
+  }
+
 }

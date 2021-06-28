@@ -7,9 +7,11 @@ function MoviesCard({ isLiked, isSavedCard }) {
 
   return(
     <div className="card">
-      <div className="card__text">
-        <h3 className="card__title">33 слова о дизайне</h3>
-        <p className="card__duration">1ч 42м</p>
+      <div className="card__info">
+        <div className="card__text">
+          <h3 className="card__title">33 слова о дизайне</h3>
+          <p className="card__duration">1ч 42м</p>
+        </div>
         <button className={isSavedCard ? 'card__like_type_saved' : cardLikeButtonClassName} />
       </div>
       <a className="card__link transparence" href="/#">

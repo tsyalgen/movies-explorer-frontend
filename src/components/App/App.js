@@ -8,6 +8,7 @@ import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Profile from "../Profile/Profile";
 import NotFound from "../NotFound/NotFound";
+import InfoTooltip from "../InfoTooltip/InfoTooltip";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <NotFound />
           </Route>
         </Switch>
+        <InfoTooltip />
       </div>
     </div>
   );

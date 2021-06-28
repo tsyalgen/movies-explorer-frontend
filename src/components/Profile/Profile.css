@@ -93,3 +93,9 @@
   text-align: center;
   color: #ee3465;
 }
+
+@media screen and (max-width: 550px) {
+  .profile__form{
+    width: 85%;
+  }
+}

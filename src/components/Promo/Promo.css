@@ -43,3 +43,12 @@
     margin-right: 30px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .promo__title{
+    font-size: 31px;
+    line-height: 39px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}

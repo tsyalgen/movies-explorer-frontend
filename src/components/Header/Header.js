@@ -4,7 +4,7 @@ import account from '../../images/account.svg';
 import {Link, NavLink, Route} from "react-router-dom";
 
 function Header() {
-  const loggedIn = false;
+  const loggedIn = true;
   return (
     <header className="header">
       <Route path="/signin">
@@ -50,7 +50,7 @@ function Header() {
                            activeClassName="header__menu-item_active">Сохраненные фильмы</NavLink>
                 </li>
                 <li className="header__menu-item">
-                  <NavLink to="/profile" className="header__menu-link"
+                  <NavLink to="/profile" className="header__menu-link_type_account"
                            activeClassName="header__menu-item_active">Аккаунт</NavLink>
                   <img src={account} alt="иконка аккаунта" className="header__menu_type_icon"/>
                 </li>

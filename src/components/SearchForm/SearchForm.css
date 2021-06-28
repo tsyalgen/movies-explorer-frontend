@@ -53,6 +53,10 @@
   border-right: 1px solid #424242;
 }
 
+.search-form__checkbox{
+  display: inherit;
+}
+
 .search-form__shortfilms{
   font-family: Inter, serif;
   font-style: normal;
@@ -63,4 +67,39 @@
   text-align: center;
   padding: 1em 0;
   margin-right: 30px;
+}
+
+@media screen and (max-width: 550px) {
+  .search-form__container{
+    flex-direction: column;
+    background-color: inherit;
+    border-radius: 0;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .search-form__form{
+    background-color: #2f2f2f;
+    border-radius: 9px;
+    width: 100%;
+    padding: 1em 0;
+  }
+
+  .search-form__input{
+    font-size: 14px;
+    line-height: 20px;
+    margin-left: 20px;
+  }
+
+  .search-form__icon{
+    margin-right: 20px;
+  }
+
+  .search-form__border{
+    display: none;
+  }
+
+  .search-form__icon{
+    display: none;
+  }
 }
