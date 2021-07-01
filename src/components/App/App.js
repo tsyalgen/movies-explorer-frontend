@@ -14,31 +14,31 @@ function App() {
   return (
     <div className="wrapper">
       <div className="page">
-        <Header />
+        <Header/>
         <Switch>
           <Route path="/signup">
-            <Register />
+            <Register/>
           </Route>
           <Route path="/signin">
-            <Login />
+            <Login/>
           </Route>
           <Route path="/movies">
-            <Movies />
+            <Movies/>
           </Route>
           <Route path="/saved-movies">
-            <SavedMovies />
+            <SavedMovies/>
           </Route>
           <Route path="/profile">
-            <Profile />
+            <Profile/>
           </Route>
           <Route exact path="/">
-            <Main />
+            <Main/>
           </Route>
           <Route path="*">
-            <NotFound />
+            <NotFound/>
           </Route>
         </Switch>
-        <InfoTooltip />
+        <InfoTooltip/>
       </div>
     </div>
   );

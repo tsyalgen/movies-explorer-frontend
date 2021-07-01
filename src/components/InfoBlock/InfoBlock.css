@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+.info-block:last-of-type{
+  margin-left: 15px;
+}
+
 .info-block__title{
   font-family: Inter, serif;
   font-style: normal;
@@ -20,6 +24,12 @@
   font-size: 14px;
   line-height: 20px;
   color: #ffffff;
+}
+
+@media screen and (max-width: 680px) {
+  .info-block:last-of-type{
+    margin-left: 0;
+  }
 }
 
 @media screen and (max-width: 570px) {

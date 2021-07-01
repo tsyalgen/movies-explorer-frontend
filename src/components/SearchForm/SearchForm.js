@@ -15,6 +15,7 @@ const SearchForm = () => {
                  placeholder="Фильм"
                  minLength="1"
                  maxLength="250"
+                 autoComplete="off"
                  required/>
           <button className="search-form__button transparence"><img src={iconWhite}
                                                                     alt="иконка поиска" />
