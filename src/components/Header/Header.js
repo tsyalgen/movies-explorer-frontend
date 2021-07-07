@@ -3,8 +3,8 @@ import logo from '../../images/logo.svg';
 import account from '../../images/account.svg';
 import {Link, NavLink, Route} from "react-router-dom";
 
-function Header() {
-  const loggedIn = true;
+function Header({ loggedIn }) {
+  // const loggedIn = true;
   return (
     <header className="header">
       <Route path="/signin">

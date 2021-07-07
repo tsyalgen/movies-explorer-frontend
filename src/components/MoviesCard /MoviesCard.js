@@ -1,7 +1,6 @@
 import './MoviesCard.css';
-import card from '../../images/image-card.png';
 
-function MoviesCard({ isLiked, isSavedCard }) {
+function MoviesCard({ isLiked, isSavedCard, movie }) {
 
   const cardLikeButtonClassName = (`card__like ${isLiked ? 'card__like_active' : ''} transparence`);
 
@@ -9,13 +8,13 @@ function MoviesCard({ isLiked, isSavedCard }) {
     <div className="card">
       <div className="card__info">
         <div className="card__text">
-          <h3 className="card__title">33 слова о дизайне</h3>
-          <p className="card__duration">1ч 42м</p>
+          <h3 className="card__title">{movie.nameRU}</h3>
+          <p className="card__duration">{movie.duration}</p>
         </div>
         <button className={isSavedCard ? 'card__like_type_saved' : cardLikeButtonClassName} />
       </div>
-      <a className="card__link transparence" href="/#">
-        <img src={card} alt="IMYA BUDUSHEE" className="card__image"/>
+      <a className="card__link transparence" href={movie.trailer}>
+        <img src={movie.image} alt={movie.nameRU} className="card__image"/>
       </a>
     </div>
   );

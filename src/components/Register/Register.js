@@ -1,20 +1,41 @@
 import './Register.css';
+import {useState} from "react";
 import {Link} from "react-router-dom";
 
-function Register() {
+function Register({ onRegister }) {
   const errorName = '';
+
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+    name: '',
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onRegister(userData.email, userData.password, userData.name);
+  }
+
   return (
     <div className="register">
-      <form className="register__form">
+      <form onSubmit={handleSubmit} className="register__form">
         <div className="register__input-section">
           <p className="register__input-label">Имя</p>
-          <input className="register__input" type="text" placeholder="Имя" name="register-name" required />
+          <input onChange={handleChange} value={userData.name || ''} className="register__input" type="text" placeholder="Имя" name="name" required />
           <span className="register__input-error">{errorName}</span>
           <p className="register__input-label">E-mail</p>
-          <input className="register__input" type="email" placeholder="E-mail" name="register-email" required />
+          <input onChange={handleChange} value={userData.email || ''} className="register__input" type="email" placeholder="E-mail" name="email" required />
           <span className="register__input-error">{errorName}</span>
           <p className="register__input-label">Пароль</p>
-          <input className="register__input" type="password" placeholder="Пароль" name="register-password" required />
+          <input onChange={handleChange} value={userData.password || ''} className="register__input" type="password" placeholder="Пароль" name="password" required />
           <span className="register__input-error">Место для будущих ошибок...</span>
         </div>
         <div className="register__submit-section">
