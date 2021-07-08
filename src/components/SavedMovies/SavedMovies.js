@@ -3,13 +3,18 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 
-function SavedMovies({ movies }) {
-  const isSavedCard = true;
+function SavedMovies({ movies, onDelete, checkLike }) {
+  const isSavedCards = true;
+  // const isLiked = true;
   return (
     <>
       <main className="movies">
         <SearchForm />
-        <MoviesCardList isSavedCard={isSavedCard} movies={movies} />
+        <MoviesCardList isSavedCards={isSavedCards}
+                        movies={movies}
+                        // isLiked={isLiked}
+                        onDelete={onDelete}
+                        checkLike={checkLike}/>
       </main>
       <Footer />
     </>

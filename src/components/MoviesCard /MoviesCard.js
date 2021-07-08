@@ -1,8 +1,15 @@
 import './MoviesCard.css';
 
-function MoviesCard({ isLiked, isSavedCard, movie }) {
+function MoviesCard({ isSavedCards, movie, onDelete, onSave, checkLike }) {
+
+  let isLiked = checkLike(movie);
 
   const cardLikeButtonClassName = (`card__like ${isLiked ? 'card__like_active' : ''} transparence`);
+
+  function handleToggleCard() {
+    isLiked ? onDelete(movie) : onSave(movie);
+  }
+
 
   return(
     <div className="card">
@@ -11,7 +18,9 @@ function MoviesCard({ isLiked, isSavedCard, movie }) {
           <h3 className="card__title">{movie.nameRU}</h3>
           <p className="card__duration">{movie.duration}</p>
         </div>
-        <button className={isSavedCard ? 'card__like_type_saved' : cardLikeButtonClassName} />
+        <button className={isSavedCards ? 'card__like_type_saved' : cardLikeButtonClassName}
+                type="button"
+                onClick={handleToggleCard}/>
       </div>
       <a className="card__link transparence" href={movie.trailer}>
         <img src={movie.image} alt={movie.nameRU} className="card__image"/>

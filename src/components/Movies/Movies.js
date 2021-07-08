@@ -3,16 +3,22 @@ import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 
-function Movies() {
-  const isSavedCard = false;
+function Movies({movies, onDelete, onSave, checkLike}) {
+  const isSavedCards = false;
+  // const isLiked = false;
   return (
     <>
       <main className="movies">
-        <SearchForm />
-        <MoviesCardList isSavedCard={isSavedCard} />
+        <SearchForm/>
+        <MoviesCardList isSavedCards={isSavedCards}
+                        movies={movies}
+                        // isLiked={isLiked}
+                        onSave={onSave}
+                        onDelete={onDelete}
+                        checkLike={checkLike}/>
         <button className="movies__more-button transparence">ИЩО</button>
       </main>
-      <Footer />
+      <Footer/>
     </>
   );
 }

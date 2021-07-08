@@ -1,6 +1,6 @@
 import './App.css';
-import {useState, useEffect} from "react";
-import {Switch, Route, useHistory} from 'react-router-dom';
+import {useEffect, useState} from "react";
+import {Route, Switch, useHistory} from 'react-router-dom';
 import Header from '../Header/Header';
 import Register from '../Register/Register';
 import Login from "../Login/Login";
@@ -26,7 +26,9 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
 
-  const [movies, setMovies] = useState([]);
+
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
 
   useEffect(() => {
     checkToken();
@@ -39,16 +41,8 @@ function App() {
         const [info, movies] = res;
 
         setCurrentUser({name: info.name, email: info.email});
-
-        const serverMovies = movies.data.map((movie) => ({
-          duration: movie.duration,
-          description: movie.description,
-          image: movie.image,
-          trailer: movie.trailer,
-          nameRU: movie.nameRU,
-        }));
-
-        setMovies(serverMovies);
+        setSavedMovies(movies.data);
+        getAllMovies();
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +50,6 @@ function App() {
 
   }, [loggedIn]);
 
-  console.log(movies);
 
   //utils
 
@@ -73,7 +66,21 @@ function App() {
     setInfoTooltip(text);
   }
 
-
+  function filterBeatResponse(movies) {
+    return movies.map((movie) => ({
+      country: movie.country,
+      description: movie.description,
+      director: movie.director,
+      duration: movie.duration,
+      image: `https://api.nomoreparties.co${movie.image.url}`,
+      movieId: movie.id,
+      nameEN: movie.nameEN,
+      nameRU: movie.nameRU,
+      thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+      trailer: movie.trailerLink,
+      year: movie.year,
+    }));
+  }
 
   //auth
 
@@ -152,72 +159,68 @@ function App() {
 
   //movies
 
-  function handleGetAllMovies() {
+  function getAllMovies() {
     getMovies()
       .then((res) => {
-        console.log(res);
+        const movies = filterBeatResponse(res);
+        localStorage.setItem("movies", JSON.stringify(movies));
+        setFilteredMovies(movies);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  function handleGetSavedMovies() {
+  function getSavedMovies() {
     api.getSavedMovies()
       .then((res) => {
-        console.log(res);
+        setSavedMovies(res.data);
       })
       .catch((err) => {
         console.log(err)
       })
   }
 
-  const handleSaveMovie = (country,
-                           director,
-                           duration,
-                           year,
-                           description,
-                           image,
-                           trailer,
-                           nameRU,
-                           nameEN,
-                           thumbnail,
-                           movieId) => {
+  const checkSaveState = (movie) => {
+    return savedMovies.some(savedMovie => savedMovie.movieId === movie.movieId);
+  }
+
+  const handleSaveMovie = (movie) => {
+    console.log(movie);
     api.saveMovie(
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailer,
-      nameRU,
-      nameEN,
-      thumbnail,
-      movieId)
+      movie.country,
+      movie.director,
+      movie.duration,
+      movie.year,
+      movie.description,
+      movie.image,
+      movie.trailer,
+      movie.nameRU,
+      movie.nameEN,
+      movie.thumbnail,
+      movie.movieId)
       .then((res) => {
-        console.log(res);
+        // checkSaveState(movie);  СОХРАНЕНКИ БЕЗ ПЕРЕЗАГРУЗКИ НЕ ПОЯВЛЯЮТСЯ, исправить с setSavedMovies
+        console.log(checkSaveState(movie));
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  const handleDeleteMovie = (id) => {
+  const handleDeleteMovie = (movie) => {
+    console.log(savedMovies);
+    const id = savedMovies.find(
+      (item) => item.movieId === movie.movieId)._id;
     api.deleteMovie(id)
       .then((res) => {
-        console.log(res)
+        checkSaveState(movie);
+        getSavedMovies();
       })
       .catch((err) => {
         console.log(err)
       });
   }
-
-
-  // deleteMovieTest("60e47310867605147a8b7be2");
-
-  // getSavedMoviesTest();
-  // getAllMovies();
 
 
   // handleSaveMovie(
@@ -248,10 +251,15 @@ function App() {
               <Login onLogin={handleLogin}/>
             </Route>
             <Route path="/movies">
-              <Movies/>
+              <Movies movies={filteredMovies}
+                      onDelete={handleDeleteMovie}
+                      onSave={handleSaveMovie}
+                      checkLike={checkSaveState}/>
             </Route>
             <Route path="/saved-movies">
-              <SavedMovies movies={movies}/>
+              <SavedMovies movies={savedMovies}
+                           onDelete={handleDeleteMovie}
+                           checkLike={checkSaveState}/>
             </Route>
             <Route path="/profile">
               <Profile onUpdate={updateProfile} onSignOut={handleSignOut}/>
