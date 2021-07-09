@@ -1,21 +1,21 @@
 import './Movies.css';
-import SearchForm from "../SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import SearchMovies from "../SearchMovies/SearchMovies";
 
-function Movies({movies, onDelete, onSave, checkLike}) {
-  const isSavedCards = false;
-  // const isLiked = false;
+function Movies({movies, onDelete, onSave, checkLike, onSearchSubmit}) {
+
+
+
   return (
     <>
       <main className="movies">
-        <SearchForm/>
-        <MoviesCardList isSavedCards={isSavedCards}
-                        movies={movies}
-                        // isLiked={isLiked}
-                        onSave={onSave}
-                        onDelete={onDelete}
-                        checkLike={checkLike}/>
+        <SearchMovies isSavedCards={false}
+                      movies={movies}
+                      onSave={onSave}
+                      onDelete={onDelete}
+                      checkLike={checkLike}
+                      onSearchSubmit={onSearchSubmit}/>
+
         <button className="movies__more-button transparence">ИЩО</button>
       </main>
       <Footer/>

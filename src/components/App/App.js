@@ -1,6 +1,7 @@
 import './App.css';
 import {useEffect, useState} from "react";
-import {Route, Switch, useHistory} from 'react-router-dom';
+import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Header from '../Header/Header';
 import Register from '../Register/Register';
 import Login from "../Login/Login";
@@ -18,6 +19,7 @@ import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 function App() {
 
   const history = useHistory();
+  const location = useLocation().pathname;
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [infoTooltip, setInfoTooltip] = useState('');
@@ -69,13 +71,13 @@ function App() {
   function filterBeatResponse(movies) {
     return movies.map((movie) => ({
       country: movie.country,
-      description: movie.description,
+      description: movie.description || '',
       director: movie.director,
       duration: movie.duration,
       image: `https://api.nomoreparties.co${movie.image.url}`,
       movieId: movie.id,
-      nameEN: movie.nameEN,
-      nameRU: movie.nameRU,
+      nameEN: movie.nameEN || '',
+      nameRU: movie.nameRU || '',
       thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
       trailer: movie.trailerLink,
       year: movie.year,
@@ -120,6 +122,8 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true)
+            history.push(location);
+
             if (history.location.pathname === '/signin' || history.location.pathname === '/signup') {
               history.push('./');
             }
@@ -164,11 +168,32 @@ function App() {
       .then((res) => {
         const movies = filterBeatResponse(res);
         localStorage.setItem("movies", JSON.stringify(movies));
-        setFilteredMovies(movies);
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  const filterMovies = (movies, text) => {
+    return movies.filter(movie =>
+      movie.nameRU.toLowerCase().includes(text.toLowerCase()) ||
+      movie.nameEN.toLowerCase().includes(text.toLowerCase()) ||
+      movie.description.toLowerCase().includes(text.toLowerCase())
+    )
+  }
+
+  const getSubmitResult = (text) => {
+    if (location === '/movies') {
+      const movies = JSON.parse(localStorage.getItem("movies"));
+      console.log(movies);
+      localStorage.setItem("filteredMovies", JSON.stringify(filterMovies(movies, text)));
+      setFilteredMovies(filterMovies(movies, text));
+    }
+    if (location === '/saved-movies') {
+      return api.getSavedMovies()
+        .then((res) => {
+          setSavedMovies(filterMovies(res.data, text))});
+    }
   }
 
   function getSavedMovies() {
@@ -186,7 +211,6 @@ function App() {
   }
 
   const handleSaveMovie = (movie) => {
-    console.log(movie);
     api.saveMovie(
       movie.country,
       movie.director,
@@ -200,8 +224,7 @@ function App() {
       movie.thumbnail,
       movie.movieId)
       .then((res) => {
-        // checkSaveState(movie);  СОХРАНЕНКИ БЕЗ ПЕРЕЗАГРУЗКИ НЕ ПОЯВЛЯЮТСЯ, исправить с setSavedMovies
-        console.log(checkSaveState(movie));
+        getSavedMovies();
       })
       .catch((err) => {
         console.log(err);
@@ -209,7 +232,6 @@ function App() {
   }
 
   const handleDeleteMovie = (movie) => {
-    console.log(savedMovies);
     const id = savedMovies.find(
       (item) => item.movieId === movie.movieId)._id;
     api.deleteMovie(id)
@@ -221,21 +243,6 @@ function App() {
         console.log(err)
       });
   }
-
-
-  // handleSaveMovie(
-  //   "country",
-  //   "director",
-  //   "123",
-  //   "2000",
-  //   "description",
-  //   "https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg",
-  //   "https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider",
-  //   "nameRUTEST",
-  //   "nameEN",
-  //   "https://filedn.com/ltOdFv1aqz1YIFhf4gTY8D7/ingus-info/BLOGS/Photography-stocks3/stock-photography-slider.jpg",
-  //   "123"
-  // )
 
 
   return (
@@ -250,20 +257,27 @@ function App() {
             <Route path="/signin">
               <Login onLogin={handleLogin}/>
             </Route>
-            <Route path="/movies">
-              <Movies movies={filteredMovies}
-                      onDelete={handleDeleteMovie}
-                      onSave={handleSaveMovie}
-                      checkLike={checkSaveState}/>
-            </Route>
-            <Route path="/saved-movies">
-              <SavedMovies movies={savedMovies}
-                           onDelete={handleDeleteMovie}
-                           checkLike={checkSaveState}/>
-            </Route>
-            <Route path="/profile">
-              <Profile onUpdate={updateProfile} onSignOut={handleSignOut}/>
-            </Route>
+            <ProtectedRoute path="/movies"
+                            loggedIn={loggedIn}
+                            component={Movies}
+                            movies={filteredMovies}
+                            onDelete={handleDeleteMovie}
+                            onSave={handleSaveMovie}
+                            onSearchSubmit={getSubmitResult}
+                            checkLike={checkSaveState}/>
+
+            <ProtectedRoute path="/saved-movies"
+                            loggedIn={loggedIn}
+                            component={SavedMovies}
+                            movies={savedMovies}
+                            onDelete={handleDeleteMovie}
+                            checkLike={checkSaveState}
+                            onSearchSubmit={getSubmitResult}/>
+            <ProtectedRoute path="/profile"
+                            loggedIn={loggedIn}
+                            component={Profile}
+                            onUpdate={updateProfile}
+                            onSignOut={handleSignOut}/>
             <Route exact path="/">
               <Main/>
             </Route>

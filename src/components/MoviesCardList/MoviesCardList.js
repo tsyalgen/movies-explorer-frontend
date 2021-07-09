@@ -1,40 +1,43 @@
+import {useEffect, useState} from "react";
 import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard /MoviesCard";
 import Preloader from "../Preloader/Preloader";
 
 const MoviesCardList = ({isSavedCards, movies, onDelete, onSave, checkLike}) => {
+
+  const [ displayedMovies, setDisplayedMovies ] = useState([]);
+
+  const paginateMovies = () => {
+    !isSavedCards ? setDisplayedMovies(movies.slice(0, 7)) : setDisplayedMovies(movies);
+  }
+
+  useEffect(() => {
+    !isSavedCards ? setDisplayedMovies(movies.slice(0, 7)) : setDisplayedMovies(movies);
+  }, [])
+  console.log(displayedMovies);
+  //нихуя не работает, надо подумать как ето сделать
+
+
   return (
     <section className="movies-card-list">
       {/*<Preloader/>*/}
       {/*<h2 className="movies-card-list__not-found">Ничего не найдено</h2>*/}
 
+      { movies.length !== 0 ?
 
-      {/*{ isSavedCards ?*/}
-      {/*  movies.map((movie) => {*/}
-      {/*    return(*/}
-      {/*      <MoviesCard key={movie._id} movie={movie} isSavedCards={isSavedCards} isLiked={isLiked} onDelete={onDelete} />*/}
-      {/*    )*/}
-      {/*  })*/}
-      {/*  :*/}
-      {/*  <MoviesCard isLiked={true} isSavedCards={isSavedCards} />*/}
-      {/*}*/}
-
-      {
-        movies.map((movie) => {
+        displayedMovies.map((movie) => {
           return (
             <MoviesCard key={movie.movieId}
                         movie={movie}
                         isSavedCards={isSavedCards}
-                        // isLiked={isLiked}
                         onDelete={onDelete}
                         onSave={onSave}
                         checkLike={checkLike}/>
           )
         })
+        :
+        <h2 className="movies-card-list__not-found">Введите запрос</h2>
       }
-
-
-      {/*<MoviesCard isLiked={true} isSavedCard={isSavedCard} />*/}
     </section>
   );
 }
