@@ -26,6 +26,7 @@
 }
 
 .profile__item{
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -64,6 +65,22 @@
   color: #ffffff;
 }
 
+.profile__item-error_field{
+  color: #ee3465;
+}
+
+.profile__item-error{
+  position: absolute;
+  top: 30px;
+  height: 15px;
+  font-family: Inter, serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ee3465;
+}
+
 .profile__edit-button{
   display: flex;
   background: inherit;
@@ -78,6 +95,11 @@
   align-items: center;
   text-align: center;
   color: #ffffff;
+}
+
+.profile__edit-button:disabled{
+  color: #424242;
+  cursor: default;
 }
 
 .profile__sign-out{

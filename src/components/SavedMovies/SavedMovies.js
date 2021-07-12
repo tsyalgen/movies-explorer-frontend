@@ -1,26 +1,36 @@
 import './SavedMovies.css';
-import SearchForm from "../SearchForm/SearchForm";
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 import SearchMovies from "../SearchMovies/SearchMovies";
+import {useEffect, useState} from "react";
 
-function SavedMovies({ movies, onDelete, checkLike, onSearchSubmit }) {
+function SavedMovies({
+                       movies, onDelete, checkLike, onSearchSubmit,
+                       isFound, handleShortMovies, isShortMovies,
+                       getShortMovies, isLoading
+                     }) {
+
+  const [shortSavedMovies, setShortSavedMovies] = useState([]);
+
+  useEffect(() => {
+    if (isShortMovies) {
+      setShortSavedMovies(getShortMovies(movies));
+    }
+  }, [isShortMovies, movies])
   return (
     <>
       <main className="movies">
         <SearchMovies isSavedCards={true}
-                      movies={movies}
+                      movies={!isShortMovies ? movies : shortSavedMovies}
                       onDelete={onDelete}
                       checkLike={checkLike}
-                      onSearchSubmit={onSearchSubmit}/>
+                      onSearchSubmit={onSearchSubmit}
+                      isFound={isFound}
+                      handleShortMovies={handleShortMovies}
+                      isShortMovies={isShortMovies}
+                      isLoading={isLoading}/>
 
-        {/*<SearchForm />*/}
-        {/*<MoviesCardList isSavedCards={true}*/}
-        {/*                movies={movies}*/}
-        {/*                onDelete={onDelete}*/}
-        {/*                checkLike={checkLike}/>*/}
       </main>
-      <Footer />
+      <Footer/>
     </>
   );
 }

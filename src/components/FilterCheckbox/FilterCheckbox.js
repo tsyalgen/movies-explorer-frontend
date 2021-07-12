@@ -1,9 +1,12 @@
 import './FilterCheckbox.css';
 
-const FilterCheckbox = () => {
-  return(
+function FilterCheckbox ({handleShortMovies, isShortMovies}) {
+
+  return (
     <div className="filter-checkbox">
-      <input type="checkbox" name="filter-checkbox" className="filter-checkbox__input" />
+      <input type="checkbox" name="checkbox" className="filter-checkbox__input"
+             onChange={handleShortMovies}
+             checked={isShortMovies}/>
     </div>
   );
 }

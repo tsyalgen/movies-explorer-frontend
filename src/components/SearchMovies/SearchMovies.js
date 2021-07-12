@@ -1,33 +1,43 @@
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import {useState} from "react";
+import {useFormWithValidation} from "../../hooks/useFormValidation";
 
 
-function SearchMovies({isSavedCards, movies, onSave, onDelete, checkLike, onSearchSubmit}) {
+function SearchMovies({
+                        isSavedCards, movies, onSave, onDelete,
+                        checkLike, onSearchSubmit, isFound,
+                        isShortMovies, handleShortMovies, isLoading
+                      }) {
 
-  const [queryText, setQueryText] = useState('');
+  const {values, errors, isValid, handleChange} = useFormWithValidation({});
 
-  const handleChange = (e) => {
-    setQueryText(e.target.value);
-  }
+  // const [queryText, setQueryText] = useState('');
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onSearchSubmit(queryText);
-
+    onSearchSubmit(values.search);
   }
 
 
   return (
     <>
       <SearchForm handleSubmit={handleSubmit}
-                  handleChange={handleChange}/>
+                  handleChange={handleChange}
+                  text={values}
+                  isShortMovies={isShortMovies}
+                  handleShortMovies={handleShortMovies}
+                  isValid={isValid}
+                  errors={errors}/>
       <MoviesCardList isSavedCards={isSavedCards}
                       movies={movies}
                       onSave={onSave}
                       onDelete={onDelete}
                       checkLike={checkLike}
+                      isFound={isFound}
+                      isLoading={isLoading}
       />
     </>
   )

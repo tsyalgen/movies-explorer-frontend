@@ -28,18 +28,29 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState({});
 
-
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
+  const [moviesIsFound, setMoviesIsFound] = useState(true);
+  const [isShortMovies, setIsShortMovies] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     checkToken();
   }, []);
 
   useEffect(() => {
+    setMoviesIsFound(true);
+    setFilteredMovies(JSON.parse(localStorage.getItem("filteredMovies")));
+    getSavedMovies();
+  }, [location]);
+
+  useEffect(() => {
 
     Promise.all([api.getProfile(), api.getSavedMovies()])
       .then((res) => {
+        setIsLoading(true);
+        setIsInfoTooltipOpen(true);
         const [info, movies] = res;
 
         setCurrentUser({name: info.name, email: info.email});
@@ -48,6 +59,10 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsInfoTooltipOpen(false);
+        setTimeout(() => setIsLoading(false), 500);
       });
 
   }, [loggedIn]);
@@ -87,6 +102,8 @@ function App() {
   //auth
 
   function handleRegister(email, password, name) {
+    setIsLoading(true);
+    setIsInfoTooltipOpen(true);
     api.register(email, password, name)
       .then(() => {
         handleInfoTooltip('Вы успешно зарегистрировались!')
@@ -99,19 +116,29 @@ function App() {
         handleInfoTooltipOpen(false);
         console.log(err)
       })
+      .finally(() => {
+        setIsInfoTooltipOpen(false);
+        setIsLoading(false);
+      })
   }
 
   function handleLogin(email, password) {
+    setIsLoading(true);
+    setIsInfoTooltipOpen(true);
     api.authorize(email, password)
       .then((res) => {
         localStorage.setItem('jwt', res.token);
         setLoggedIn(true);
-        history.push('./')
+        history.push('./movies')
       })
       .catch((err) => {
         handleInfoTooltip('Неверный email или пароль! Попробуйте еще раз.')
         handleInfoTooltipOpen(false);
         console.log(err);
+      })
+      .finally(() => {
+        setIsInfoTooltipOpen(false);
+        setIsLoading(false);
       });
   }
 
@@ -139,6 +166,8 @@ function App() {
   //profile
 
   const handleSignOut = () => {
+    localStorage.removeItem('movies');
+    localStorage.removeItem('filteredMovies');
     localStorage.removeItem('jwt')
     setLoggedIn(false)
     history.push('/')
@@ -152,12 +181,21 @@ function App() {
   // }
 
   const updateProfile = (email, name) => {
+    setIsLoading(true);
+    setIsInfoTooltipOpen(true);
     api.updateProfile(email, name)
       .then((res) => {
         setCurrentUser({name: res.data.name, email: res.data.email});
+        handleInfoTooltip('Данные обновлены!')
+        handleInfoTooltipOpen(true)
       })
       .catch((err) => {
+        handleInfoTooltip('Ошибка обновления! Попробуйте еще раз.')
+        handleInfoTooltipOpen(false)
         console.log(err)
+      })
+      .finally(() => {
+        setIsLoading(false);
       })
   }
 
@@ -183,16 +221,36 @@ function App() {
   }
 
   const getSubmitResult = (text) => {
+    setIsLoading(true);
     if (location === '/movies') {
       const movies = JSON.parse(localStorage.getItem("movies"));
-      console.log(movies);
-      localStorage.setItem("filteredMovies", JSON.stringify(filterMovies(movies, text)));
-      setFilteredMovies(filterMovies(movies, text));
+      const items = filterMovies(movies, text);
+      if (items.length === 0) {
+        setMoviesIsFound(false);
+      } else {
+        setMoviesIsFound(true);
+      }
+      localStorage.setItem("filteredMovies", JSON.stringify(items));
+      setFilteredMovies(items);
+      setTimeout(() => setIsLoading(false), 1000);
     }
     if (location === '/saved-movies') {
       return api.getSavedMovies()
         .then((res) => {
-          setSavedMovies(filterMovies(res.data, text))});
+          const items = filterMovies(res.data, text);
+          if (items.length === 0) {
+            setMoviesIsFound(false);
+          } else {
+            setMoviesIsFound(true);
+          }
+          setSavedMovies(items)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        .finally(() => {
+          setTimeout(() => setIsLoading(false), 1000);
+        })
     }
   }
 
@@ -244,6 +302,13 @@ function App() {
       });
   }
 
+  const handleShortMovies = (e) => {
+    setIsShortMovies(e.target.checked);
+  }
+  const getShortMovies = (movies) => {
+    return movies.filter(movie => movie.duration < 40);
+  }
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -264,7 +329,12 @@ function App() {
                             onDelete={handleDeleteMovie}
                             onSave={handleSaveMovie}
                             onSearchSubmit={getSubmitResult}
-                            checkLike={checkSaveState}/>
+                            checkLike={checkSaveState}
+                            isFound={moviesIsFound}
+                            handleShortMovies={handleShortMovies}
+                            isShortMovies={isShortMovies}
+                            getShortMovies={getShortMovies}
+                            isLoading={isLoading}/>
 
             <ProtectedRoute path="/saved-movies"
                             loggedIn={loggedIn}
@@ -272,7 +342,13 @@ function App() {
                             movies={savedMovies}
                             onDelete={handleDeleteMovie}
                             checkLike={checkSaveState}
-                            onSearchSubmit={getSubmitResult}/>
+                            onSearchSubmit={getSubmitResult}
+                            isFound={moviesIsFound}
+                            handleShortMovies={handleShortMovies}
+                            isShortMovies={isShortMovies}
+                            getShortMovies={getShortMovies}
+                            isLoading={isLoading}/>
+
             <ProtectedRoute path="/profile"
                             loggedIn={loggedIn}
                             component={Profile}
@@ -285,7 +361,9 @@ function App() {
               <NotFound/>
             </Route>
           </Switch>
-          <InfoTooltip isOpen={isInfoTooltipOpen} isSuccess={isSuccess} onClose={closePopup} infoText={infoTooltip}/>
+          <InfoTooltip isOpen={isInfoTooltipOpen} isSuccess={isSuccess}
+                       onClose={closePopup} infoText={infoTooltip}
+                       isLoading={isLoading}/>
         </div>
       </div>
     </CurrentUserContext.Provider>

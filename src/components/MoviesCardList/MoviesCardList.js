@@ -3,40 +3,94 @@ import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard /MoviesCard";
 import Preloader from "../Preloader/Preloader";
 
-const MoviesCardList = ({isSavedCards, movies, onDelete, onSave, checkLike}) => {
+const MoviesCardList = ({isSavedCards, movies, onDelete, onSave, checkLike, isFound, isLoading}) => {
 
-  const [ displayedMovies, setDisplayedMovies ] = useState([]);
+  const [currentCount, setCurrentCount] = useState(() => {
+    const width = window.innerWidth;
+    if (width > 320) {
+      return 8;
+    } else {
+      return 5;
+    }
+  });
 
-  const paginateMovies = () => {
-    !isSavedCards ? setDisplayedMovies(movies.slice(0, 7)) : setDisplayedMovies(movies);
+  const [addCount, setAddCount] = useState(() => {
+    const width = window.innerWidth;
+    if (width > 768) {
+      return 3;
+    } else {
+      return 2;
+    }
+  });
+
+  const [displayedMovies, setDisplayedMovies] = useState([]);
+
+  function handleResize() {
+    const width = window.innerWidth;
+    if (width <= 320) {
+      setCurrentCount(5);
+      setAddCount(2);
+    } else if (width < 768) {
+      setCurrentCount(8);
+      setAddCount(2);
+    } else {
+      setCurrentCount(8);
+      setAddCount(3);
+    }
+  }
+
+  function renderAddCount() {
+    const count = Math.min(movies.length, currentCount + addCount);
+    const moviesForAdd = movies.slice(currentCount, count);
+    setDisplayedMovies([...displayedMovies, ...moviesForAdd]);
+    setCurrentCount(count);
+  }
+
+  function handleAddMoreMovies() {
+    renderAddCount();
   }
 
   useEffect(() => {
-    !isSavedCards ? setDisplayedMovies(movies.slice(0, 7)) : setDisplayedMovies(movies);
-  }, [])
-  console.log(displayedMovies);
-  //нихуя не работает, надо подумать как ето сделать
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+  useEffect(() => {
+    !isSavedCards && movies !== null ? setDisplayedMovies(movies.slice(0, currentCount)) : setDisplayedMovies(movies);
+  }, [movies])
+
 
 
   return (
     <section className="movies-card-list">
-      {/*<Preloader/>*/}
-      {/*<h2 className="movies-card-list__not-found">Ничего не найдено</h2>*/}
+      {isLoading ? <Preloader/> : (
+        !isFound ? <h2 className="movies-card-list__not-found">Ничего не найдено</h2>
+          :
+          (movies !== null ?
 
-      { movies.length !== 0 ?
-
-        displayedMovies.map((movie) => {
-          return (
-            <MoviesCard key={movie.movieId}
-                        movie={movie}
-                        isSavedCards={isSavedCards}
-                        onDelete={onDelete}
-                        onSave={onSave}
-                        checkLike={checkLike}/>
+              displayedMovies.map((movie) => {
+                return (
+                  <MoviesCard key={movie.movieId}
+                              movie={movie}
+                              isSavedCards={isSavedCards}
+                              onDelete={onDelete}
+                              onSave={onSave}
+                              checkLike={checkLike}/>
+                )
+              })
+              :
+              <h2 className="movies-card-list__not-found">Введите запрос</h2>
           )
-        })
-        :
-        <h2 className="movies-card-list__not-found">Введите запрос</h2>
+      )}
+      {!isSavedCards && !isLoading && (movies !== null && movies.length > currentCount) &&
+      <button className="movies-card-list__more-button transparence"
+              type="button"
+              onClick={handleAddMoreMovies}>Еще
+      </button>
       }
     </section>
   );

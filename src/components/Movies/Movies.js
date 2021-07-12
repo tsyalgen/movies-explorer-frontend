@@ -1,22 +1,38 @@
 import './Movies.css';
 import Footer from "../Footer/Footer";
 import SearchMovies from "../SearchMovies/SearchMovies";
+import {useEffect, useState} from "react";
 
-function Movies({movies, onDelete, onSave, checkLike, onSearchSubmit}) {
+function Movies({
+                  movies, onDelete, onSave, checkLike, onSearchSubmit,
+                  isFound, handleShortMovies, isShortMovies, getShortMovies, isLoading
+                }) {
 
+  const [shortMovies, setShortMovies] = useState([]);
+
+  useEffect(() => {
+    if (isShortMovies && movies !== null) {
+      setShortMovies(getShortMovies(movies));
+    } else {
+      setShortMovies(movies);
+    }
+  }, [isShortMovies])
 
 
   return (
     <>
       <main className="movies">
         <SearchMovies isSavedCards={false}
-                      movies={movies}
+                      movies={!isShortMovies ? movies : shortMovies}
                       onSave={onSave}
                       onDelete={onDelete}
                       checkLike={checkLike}
-                      onSearchSubmit={onSearchSubmit}/>
+                      onSearchSubmit={onSearchSubmit}
+                      isFound={isFound}
+                      handleShortMovies={handleShortMovies}
+                      isShortMovies={isShortMovies}
+                      isLoading={isLoading}/>
 
-        <button className="movies__more-button transparence">ИЩО</button>
       </main>
       <Footer/>
     </>
