@@ -47,22 +47,24 @@ function App() {
 
   useEffect(() => {
 
-    Promise.all([api.getProfile(), api.getSavedMovies()])
+    Promise.all([api.getProfile(), api.getSavedMovies(), getMovies()])
       .then((res) => {
         setIsLoading(true);
         setIsInfoTooltipOpen(true);
-        const [info, movies] = res;
+        const [info, movies, beast] = res;
 
         setCurrentUser({name: info.name, email: info.email});
+        const beastMovies = filterBeatResponse(beast);
+        localStorage.setItem("movies", JSON.stringify(beastMovies));
         setSavedMovies(movies.data);
-        getAllMovies();
+        // getAllMovies();
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
         setIsInfoTooltipOpen(false);
-        setTimeout(() => setIsLoading(false), 500);
+        setTimeout(() => setIsLoading(false), 1000);
       });
 
   }, [loggedIn]);
@@ -204,11 +206,17 @@ function App() {
   function getAllMovies() {
     getMovies()
       .then((res) => {
+        setIsLoading(true);
+        setIsInfoTooltipOpen(true);
         const movies = filterBeatResponse(res);
         localStorage.setItem("movies", JSON.stringify(movies));
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsInfoTooltipOpen(false);
+        setIsLoading(false);
       });
   }
 
