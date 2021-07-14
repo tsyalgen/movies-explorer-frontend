@@ -2,9 +2,17 @@ import './Header.css';
 import logo from '../../images/logo.svg';
 import account from '../../images/account.svg';
 import {Link, NavLink, Route} from "react-router-dom";
+import {useState} from "react";
 
-function Header() {
-  const loggedIn = true;
+function Header({ loggedIn }) {
+  // const loggedIn = true;
+  const [isChange, setIsChange] = useState(false);
+
+  function handleToggle () {
+    setIsChange(!isChange);
+  }
+
+
   return (
     <header className="header">
       <Route path="/signin">
@@ -32,30 +40,31 @@ function Header() {
                      activeClassName="header__menu_current">Аккаунт
               <img src={account} alt="иконка аккаунта" className="header__menu_type_icon transparence"/></NavLink>
             <div className="header__menu_mobile header__menu-burger">
-              <input className="header__menu-toggle" id="menu-toggle" type="checkbox"/>
-              <label className="header__menu-btn" htmlFor="menu-toggle">
+              <input className="header__menu-toggle" id="menu-toggle"
+                     type="checkbox" checked={isChange} onChange={()=>{}}/>
+              <label className="header__menu-btn" htmlFor="menu-toggle" onClick={handleToggle}>
                 <span className="header__menu-span"/>
               </label>
               <ul className="header__menu-box">
                 <li className="header__menu-item">
                   <NavLink exact to="/" className="header__menu-link"
-                           activeClassName="header__menu-item_active">Главная</NavLink>
+                           activeClassName="header__menu-item_active" onClick={handleToggle}>Главная</NavLink>
                 </li>
                 <li className="header__menu-item">
                   <NavLink to="/movies" className="header__menu-link"
-                           activeClassName="header__menu-item_active">Фильмы</NavLink>
+                           activeClassName="header__menu-item_active" onClick={handleToggle}>Фильмы</NavLink>
                 </li>
                 <li className="header__menu-item">
                   <NavLink to="/saved-movies" className="header__menu-link"
-                           activeClassName="header__menu-item_active">Сохраненные фильмы</NavLink>
+                           activeClassName="header__menu-item_active" onClick={handleToggle}>Сохраненные фильмы</NavLink>
                 </li>
                 <li className="header__menu-item">
                   <NavLink to="/profile" className="header__menu-link_type_account"
-                           activeClassName="header__menu-item_active">Аккаунт</NavLink>
+                           activeClassName="header__menu-item_active" onClick={handleToggle}>Аккаунт</NavLink>
                   <img src={account} alt="иконка аккаунта" className="header__menu_type_icon"/>
                 </li>
               </ul>
-              <div className="header__menu_type_background"/>
+              <div className="header__menu_type_background" onClick={handleToggle}/>
             </div>
           </> : <>
             <Link to="/signup"
