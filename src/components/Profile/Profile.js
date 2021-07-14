@@ -1,5 +1,5 @@
 import './Profile.css';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 import {useFormWithValidation} from "../../hooks/useFormValidation";
 
@@ -10,6 +10,7 @@ function Profile({onUpdate, onSignOut}) {
     useFormWithValidation({name: currentUser.name, email: currentUser.email});
 
   const [valuesEqual, setValuesEqual] = useState(true);
+
 
   function handleEqual() {
     currentUser.name === values.name && currentUser.email === values.email ?
@@ -24,10 +25,6 @@ function Profile({onUpdate, onSignOut}) {
 
 
 
-  // const [userData, setUserData] = useState({
-  //   email: '',
-  //   name: '',
-  // });
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
@@ -43,6 +40,10 @@ function Profile({onUpdate, onSignOut}) {
     onUpdate(values.email, values.name);
   }
 
+  useEffect(()  => {
+    values.name = currentUser.name;
+    values.email = currentUser.email;
+  }, [currentUser])
 
   return (
     <main className="profile">

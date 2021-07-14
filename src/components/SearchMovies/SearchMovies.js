@@ -30,7 +30,8 @@ function SearchMovies({
                   isShortMovies={isShortMovies}
                   handleShortMovies={handleShortMovies}
                   isValid={isValid}
-                  errors={errors}/>
+                  errors={errors}
+                  isLoading={isLoading}/>
       <MoviesCardList isSavedCards={isSavedCards}
                       movies={movies}
                       onSave={onSave}

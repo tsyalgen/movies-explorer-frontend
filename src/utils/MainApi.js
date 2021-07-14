@@ -1,4 +1,5 @@
-const BASE_URL = 'https://api.tsyalgen.nomoredomains.club';
+// const BASE_URL = 'https://api.tsyalgen.nomoredomains.club';
+const BASE_URL = 'http://localhost:3001';
 
 //auth
 export const register = (email, password, name) => {

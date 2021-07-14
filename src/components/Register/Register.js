@@ -23,7 +23,7 @@ function Register({ onRegister }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     onRegister(values.email, values.password, values.name);
-    resetForm();
+    // resetForm();
   }
 
   return (

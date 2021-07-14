@@ -2,12 +2,14 @@ import './InfoTooltip.css';
 import registrationSuccess from '../../images/registration-success.svg';
 import registrationFailed from '../../images/registration-failed.svg';
 import Preloader from "../Preloader/Preloader";
+import {useEffect} from "react";
 
 function InfoTooltip({isOpen, isSuccess, infoText, onClose, isLoading}) {
 
+
   return (
     <div className={`popup popup__info-tooltip ${isOpen && 'popup_opened'}`}>
-      <div className="popup__overlay"/>
+      <div className="popup__overlay" onClick={onClose}/>
       {!isLoading ?
         <div className="popup__form">
           <img src={isSuccess ? registrationSuccess : registrationFailed} alt="состояние регистрации"

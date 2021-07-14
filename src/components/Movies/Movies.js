@@ -23,7 +23,7 @@ function Movies({
     <>
       <main className="movies">
         <SearchMovies isSavedCards={false}
-                      movies={!isShortMovies ? movies : shortMovies}
+                      movies={isShortMovies && shortMovies !== null ? shortMovies : movies}
                       onSave={onSave}
                       onDelete={onDelete}
                       checkLike={checkLike}

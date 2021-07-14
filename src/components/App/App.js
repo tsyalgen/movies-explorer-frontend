@@ -14,6 +14,7 @@ import InfoTooltip from "../InfoTooltip/InfoTooltip";
 import * as api from "../../utils/MainApi";
 import {getMovies} from "../../utils/MoviesApi";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
+import {SHORT_FILM} from "../../utils/constants";
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
 
   useEffect(() => {
     checkToken();
+    getProfile();
   }, []);
 
   useEffect(() => {
@@ -50,7 +52,7 @@ function App() {
     Promise.all([api.getProfile(), api.getSavedMovies(), getMovies()])
       .then((res) => {
         setIsLoading(true);
-        setIsInfoTooltipOpen(true);
+        // setIsInfoTooltipOpen(true);
         const [info, movies, beast] = res;
 
         setCurrentUser({name: info.name, email: info.email});
@@ -63,11 +65,27 @@ function App() {
         console.log(err);
       })
       .finally(() => {
-        setIsInfoTooltipOpen(false);
-        setTimeout(() => setIsLoading(false), 1000);
+        // setTimeout(() => setIsInfoTooltipOpen(false), 3000);
+        setIsLoading(false);
       });
 
   }, [loggedIn]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        setIsInfoTooltipOpen(false);
+      }
+    });
+
+    return () => {
+      window.removeEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          setIsInfoTooltipOpen(false);
+        }
+      });
+    }
+  }, []);
 
 
   //utils
@@ -108,40 +126,50 @@ function App() {
     setIsInfoTooltipOpen(true);
     api.register(email, password, name)
       .then(() => {
-        handleInfoTooltip('Вы успешно зарегистрировались!')
-        handleInfoTooltipOpen(true)
+        // setIsLoading(false);
+        // handleInfoTooltip('Вы успешно зарегистрировались!')
+        // handleInfoTooltipOpen(true)
 
         handleLogin(email, password);
+        setIsLoading(false);
+        handleInfoTooltipOpen(true);
+        handleInfoTooltip('Вы успешно зарегистрировались!')
+        setTimeout(() => {
+          setIsInfoTooltipOpen(false)
+        }, 2000)
       })
       .catch((err) => {
+        setIsLoading(false);
         handleInfoTooltip('Что-то пошло не так! Попробуйте еще раз.')
         handleInfoTooltipOpen(false);
         console.log(err)
       })
-      .finally(() => {
-        setIsInfoTooltipOpen(false);
-        setIsLoading(false);
-      })
+    // .finally(() => {
+    //   setIsInfoTooltipOpen(false);
+    //   setIsLoading(false);
+    // })
   }
 
   function handleLogin(email, password) {
-    setIsLoading(true);
-    setIsInfoTooltipOpen(true);
+    // setIsLoading(true);
+    // setIsInfoTooltipOpen(true);
     api.authorize(email, password)
       .then((res) => {
         localStorage.setItem('jwt', res.token);
         setLoggedIn(true);
+        // setIsLoading(false);
         history.push('./movies')
       })
       .catch((err) => {
+        setIsLoading(false);
         handleInfoTooltip('Неверный email или пароль! Попробуйте еще раз.')
         handleInfoTooltipOpen(false);
         console.log(err);
       })
-      .finally(() => {
-        setIsInfoTooltipOpen(false);
-        setIsLoading(false);
-      });
+    // .finally(() => {
+    //   setIsInfoTooltipOpen(false);
+    //   setIsLoading(false);
+    // });
   }
 
   const checkToken = () => {
@@ -174,13 +202,13 @@ function App() {
     setLoggedIn(false)
     history.push('/')
   }
-  //
-  // const getProfile = () => {
-  //   api.getProfile()
-  //     .then((res) => {
-  //       setCurrentUser({name: res.name, email: res.email});
-  //     });
-  // }
+
+  const getProfile = () => {
+    api.getProfile()
+      .then((res) => {
+        setCurrentUser({name: res.name, email: res.email});
+      });
+  }
 
   const updateProfile = (email, name) => {
     setIsLoading(true);
@@ -203,22 +231,22 @@ function App() {
 
   //movies
 
-  function getAllMovies() {
-    getMovies()
-      .then((res) => {
-        setIsLoading(true);
-        setIsInfoTooltipOpen(true);
-        const movies = filterBeatResponse(res);
-        localStorage.setItem("movies", JSON.stringify(movies));
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setIsInfoTooltipOpen(false);
-        setIsLoading(false);
-      });
-  }
+  // function getAllMovies() {
+  //   getMovies()
+  //     .then((res) => {
+  //       setIsLoading(true);
+  //       setIsInfoTooltipOpen(true);
+  //       const movies = filterBeatResponse(res);
+  //       localStorage.setItem("movies", JSON.stringify(movies));
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       setIsInfoTooltipOpen(false);
+  //       setIsLoading(false);
+  //     });
+  // }
 
   const filterMovies = (movies, text) => {
     return movies.filter(movie =>
@@ -314,7 +342,7 @@ function App() {
     setIsShortMovies(e.target.checked);
   }
   const getShortMovies = (movies) => {
-    return movies.filter(movie => movie.duration < 40);
+    return movies.filter(movie => movie.duration < SHORT_FILM);
   }
 
 

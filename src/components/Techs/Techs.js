@@ -9,7 +9,7 @@ const Techs = () => {
       </a>
       <h1 className="techs__title">7 технологий</h1>
       <p className="techs__description">На курсе веб-разработки мы освоили технологии,
-        которые применили в дипломном проекте.</p>
+        которые применили в дипломном проекте. Чтобы раскрыть полный функционал сайта - авторизируйтесь.</p>
       <ul className="techs__items">
         <li className="techs__item transparence">HTML</li>
         <li className="techs__item transparence">CSS</li>

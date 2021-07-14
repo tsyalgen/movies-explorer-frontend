@@ -6,7 +6,7 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
 function SearchForm({
                       handleSubmit, handleChange, text,
-                      handleShortMovies, isShortMovies, errors, isValid
+                      handleShortMovies, isShortMovies, errors, isValid, isLoading
                     }) {
 
 
@@ -24,9 +24,11 @@ function SearchForm({
                  autoComplete="off"
                  value={text.search || ''}
                  onChange={handleChange}
-                 required/>
-          <button className="search-form__button transparence" disabled={!isValid} type="submit"><img src={iconWhite}
-                                                                                                      alt="иконка поиска"/>
+                 required
+                 disabled={isLoading}/>
+          <button className="search-form__button transparence" disabled={!isValid || isLoading} type="submit"><img
+            src={iconWhite}
+            alt="иконка поиска"/>
           </button>
           <span className="search-form__border"/>
         </form>

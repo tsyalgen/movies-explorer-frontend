@@ -2,24 +2,25 @@ import {useEffect, useState} from "react";
 import './MoviesCardList.css';
 import MoviesCard from "../MoviesCard /MoviesCard";
 import Preloader from "../Preloader/Preloader";
+import {ADD_MIN_MOVIES, ADD_MOVIES, MEDIUM_SCREEN_, MIN_MOVIES, MOVIES, SMALL_SCREEN} from "../../utils/constants";
 
 const MoviesCardList = ({isSavedCards, movies, onDelete, onSave, checkLike, isFound, isLoading}) => {
 
   const [currentCount, setCurrentCount] = useState(() => {
     const width = window.innerWidth;
-    if (width > 320) {
-      return 8;
+    if (width > SMALL_SCREEN) {
+      return MOVIES;
     } else {
-      return 5;
+      return MIN_MOVIES;
     }
   });
 
   const [addCount, setAddCount] = useState(() => {
     const width = window.innerWidth;
-    if (width > 768) {
-      return 3;
+    if (width > MEDIUM_SCREEN_) {
+      return ADD_MOVIES;
     } else {
-      return 2;
+      return ADD_MIN_MOVIES;
     }
   });
 
@@ -27,15 +28,15 @@ const MoviesCardList = ({isSavedCards, movies, onDelete, onSave, checkLike, isFo
 
   function handleResize() {
     const width = window.innerWidth;
-    if (width <= 320) {
-      setCurrentCount(5);
-      setAddCount(2);
-    } else if (width < 768) {
-      setCurrentCount(8);
-      setAddCount(2);
+    if (width <= SMALL_SCREEN) {
+      setCurrentCount(MIN_MOVIES);
+      setAddCount(ADD_MIN_MOVIES);
+    } else if (width < MEDIUM_SCREEN_) {
+      setCurrentCount(MOVIES);
+      setAddCount(ADD_MIN_MOVIES);
     } else {
-      setCurrentCount(8);
-      setAddCount(3);
+      setCurrentCount(MOVIES);
+      setAddCount(ADD_MOVIES);
     }
   }
 
@@ -62,7 +63,6 @@ const MoviesCardList = ({isSavedCards, movies, onDelete, onSave, checkLike, isFo
   useEffect(() => {
     !isSavedCards && movies !== null ? setDisplayedMovies(movies.slice(0, currentCount)) : setDisplayedMovies(movies);
   }, [movies])
-
 
 
   return (

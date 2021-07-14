@@ -11,8 +11,8 @@ const Footer = () => {
              rel="noreferrer noopener" target="_blank">Яндекс.Практикум</a>
           <a className="footer__link transparence" href="https://github.com/tsyalgen"
              rel="noreferrer noopener" target="_blank">GitHub</a>
-          <a className="footer__link transparence" href="https://github.com/tsyalgen"
-             rel="noreferrer noopener" target="_blank">Facebook</a>
+          <a className="footer__link transparence" href="https://t.me/atsybin"
+             rel="noreferrer noopener" target="_blank">Telegram</a>
         </div>
       </div>
     </footer>
